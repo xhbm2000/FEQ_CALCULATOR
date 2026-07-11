@@ -5,13 +5,25 @@
 <title>FEQ — Calculateur</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="theme-color" content="#0a0006">
+<meta name="theme-color" content="#F4F2FF">
 <style>
+:root {
+  --bg: #F4F2FF;
+  --surface: rgba(255,255,255,0.88);
+  --surface-active: rgba(255,255,255,0.95);
+  --text: #141428;
+  --text-muted: #8A86A0;
+  --blue: #3D5AFE;
+  --pink: #FF2D78;
+  --green: #00D26A;
+  --border: rgba(0,0,0,0.06);
+  --border-active: rgba(61,90,254,0.22);
+}
+
 html, body {
-  margin: 0;
-  padding: 0;
-  background: #0a0006;
-  color: #f0ede8;
+  margin: 0; padding: 0;
+  background: var(--bg);
+  color: var(--text);
   font-family: -apple-system, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   height: 100%;
   overflow: hidden;
@@ -23,16 +35,11 @@ html, body {
 
 .bg-photo {
   position: fixed;
-  inset: -10px;
+  inset: 0;
   z-index: 0;
   background: url('bg.jpg') center top / cover no-repeat;
-  filter: brightness(0.15) saturate(1.6) contrast(1.1);
-  animation: slowDrift 30s ease-in-out infinite alternate;
-}
-
-@keyframes slowDrift {
-  0%   { transform: scale(1.0) translate(0, 0); }
-  100% { transform: scale(1.06) translate(-8px, -4px); }
+  filter: brightness(1.6) saturate(0.3) contrast(0.7);
+  opacity: 0.18;
 }
 
 .bg-overlay {
@@ -40,13 +47,10 @@ html, body {
   inset: 0;
   z-index: 0;
   background:
-    radial-gradient(ellipse at 50% 0%, rgba(212,32,39,0.30) 0%, transparent 50%),
-    radial-gradient(ellipse at 20% 100%, rgba(212,32,39,0.10) 0%, transparent 40%),
-    linear-gradient(180deg,
-      rgba(10,0,6,0.3) 0%,
-      rgba(10,0,6,0.65) 30%,
-      rgba(10,0,6,0.88) 60%,
-      rgba(10,0,6,0.96) 100%);
+    radial-gradient(ellipse at 30% 0%, rgba(61,90,254,0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 0%, rgba(255,45,120,0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 100%, rgba(0,210,106,0.05) 0%, transparent 40%),
+    linear-gradient(180deg, rgba(244,242,255,0.7) 0%, rgba(244,242,255,0.92) 100%);
 }
 
 .app {
@@ -55,7 +59,7 @@ html, body {
   width: 100%;
   max-width: 420px;
   margin: 0 auto;
-  padding: 0 14px;
+  padding: 0 16px;
   display: flex;
   flex-direction: column;
   height: 100dvh;
@@ -64,65 +68,63 @@ html, body {
 
 header {
   text-align: center;
-  padding: 16px 0 10px;
+  padding: 18px 0 10px;
   flex-shrink: 0;
+}
+
+.feq-logo {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
   margin-bottom: 4px;
 }
 
-h1 {
-  font-size: 3.4rem;
+.feq-logo span {
+  font-size: 3.2rem;
   font-weight: 900;
-  letter-spacing: 0.28em;
-  color: #fff;
+  letter-spacing: 0.08em;
   line-height: 1;
-  margin: 0;
-  text-shadow:
-    0 0 20px rgba(212,32,39,0.9),
-    0 0 50px rgba(212,32,39,0.5),
-    0 0 100px rgba(212,32,39,0.25),
-    0 2px 4px rgba(0,0,0,0.5);
-  animation: glowPulse 3s ease-in-out infinite;
+  display: inline-block;
 }
-
-@keyframes glowPulse {
-  0%, 100% { text-shadow: 0 0 20px rgba(212,32,39,0.9), 0 0 50px rgba(212,32,39,0.5), 0 0 100px rgba(212,32,39,0.25), 0 2px 4px rgba(0,0,0,0.5); }
-  50%      { text-shadow: 0 0 30px rgba(212,32,39,1.0), 0 0 70px rgba(212,32,39,0.6), 0 0 120px rgba(212,32,39,0.35), 0 2px 4px rgba(0,0,0,0.5); }
-}
+.feq-logo .l-f { color: var(--blue); }
+.feq-logo .l-e { color: var(--pink); }
+.feq-logo .l-q { color: var(--green); }
 
 .festival-name {
-  font-size: 0.58rem;
-  font-weight: 600;
-  color: rgba(212,32,39,0.7);
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: var(--text-muted);
   text-transform: uppercase;
-  letter-spacing: 0.30em;
+  letter-spacing: 0.22em;
   margin: 6px 0 0;
 }
 
 .header-divider {
-  width: 60px;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, #D42027, transparent);
-  margin: 10px auto 8px;
+  width: 50px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--blue), var(--pink), var(--green));
+  margin: 12px auto 10px;
   border: none;
+  border-radius: 2px;
 }
 
 .header-total {
-  font-size: 2.4rem;
+  font-size: 2.2rem;
   font-weight: 900;
   font-variant-numeric: tabular-nums;
-  color: #fff;
+  color: var(--text);
   margin: 0;
-  transition: transform 0.12s ease, color 0.2s ease;
+  transition: transform 0.1s ease;
 }
-.header-total.zero { color: rgba(255,255,255,0.12); }
-.header-total.bump { transform: scale(1.08); }
+.header-total.zero { color: #C8C4D8; }
+.header-total.bump { transform: scale(1.06); }
 
 .header-total-label {
   font-size: 0.55rem;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.18em;
-  color: rgba(255,255,255,0.25);
+  letter-spacing: 0.15em;
+  color: var(--text-muted);
   margin: 2px 0 0;
 }
 
@@ -136,58 +138,45 @@ h1 {
 }
 
 .card {
-  background: rgba(255,255,255,0.04);
+  background: var(--surface);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255,255,255,0.06);
+  border: 1.5px solid var(--border);
   border-radius: 14px;
   padding: 12px 14px;
-  transition: border-color 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 2px 8px rgba(61,90,254,0.04);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
   position: relative;
   overflow: hidden;
 }
 
-.card::before {
+.card::after {
   content: '';
   position: absolute;
-  inset: 0;
-  border-radius: 14px;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--blue), var(--pink), var(--green));
   opacity: 0;
-  background: radial-gradient(ellipse at 50% 0%, rgba(212,32,39,0.15) 0%, transparent 70%);
-  transition: opacity 0.3s ease;
-  pointer-events: none;
+  transition: opacity 0.25s ease;
 }
 
 .card.active {
-  border-color: rgba(212,32,39,0.4);
-  box-shadow: 0 0 25px rgba(212,32,39,0.08), inset 0 0 20px rgba(212,32,39,0.03);
+  background: var(--surface-active);
+  border-color: var(--border-active);
+  box-shadow: 0 4px 16px rgba(61,90,254,0.08);
 }
-
-.card.active::before {
-  opacity: 1;
-}
+.card.active::after { opacity: 1; }
 
 .card-top {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
   margin-bottom: 8px;
-  gap: 6px;
+  gap: 8px;
 }
 
-.card-name {
-  font-size: 0.92rem;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  color: #f0ede8;
-}
-
-.card-unit {
-  font-size: 0.6rem;
-  color: rgba(255,255,255,0.25);
-  white-space: nowrap;
-  flex-shrink: 0;
-}
+.card-name { font-size: 0.95rem; font-weight: 700; color: var(--text); }
+.card-unit { font-size: 0.62rem; color: var(--text-muted); white-space: nowrap; flex-shrink: 0; }
 
 .stepper {
   display: flex;
@@ -212,33 +201,32 @@ h1 {
   touch-action: manipulation;
   line-height: 1;
   flex-shrink: 0;
-  transition: transform 0.08s ease, box-shadow 0.2s ease;
+  transition: transform 0.08s ease;
   -webkit-appearance: none;
   appearance: none;
 }
 
-.btn:active:not(:disabled) { transform: scale(0.86); }
-.btn:focus-visible { outline: 2px solid #D42027; outline-offset: 3px; }
+.btn:active:not(:disabled) { transform: scale(0.88); }
+.btn:focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; }
 
 .btn-minus {
-  background: rgba(255,255,255,0.06);
-  color: rgba(255,255,255,0.3);
-  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(61,90,254,0.06);
+  color: #9A94B8;
+  border: 1.5px solid rgba(61,90,254,0.08);
 }
 .btn-minus:active:not(:disabled) {
-  background: rgba(255,255,255,0.14);
-  color: #fff;
+  background: rgba(61,90,254,0.12);
+  color: var(--text);
 }
-.btn-minus:disabled { opacity: 0.12; cursor: default; }
+.btn-minus:disabled { opacity: 0.25; cursor: default; }
 
 .btn-plus {
-  background: #D42027;
+  background: var(--blue);
   color: #fff;
-  box-shadow: 0 4px 18px rgba(212,32,39,0.45), 0 0 30px rgba(212,32,39,0.15);
+  box-shadow: 0 4px 14px rgba(61,90,254,0.30);
 }
 .btn-plus:active {
-  background: #ff3040;
-  box-shadow: 0 4px 24px rgba(255,48,64,0.55), 0 0 40px rgba(212,32,39,0.25);
+  background: #304FFE;
 }
 
 .qty-block { text-align: center; min-width: 72px; }
@@ -248,15 +236,15 @@ h1 {
   font-weight: 900;
   font-variant-numeric: tabular-nums;
   line-height: 1;
-  color: #fff;
-  transition: color 0.2s ease, transform 0.1s ease;
+  color: var(--text);
+  transition: color 0.15s, transform 0.1s ease;
 }
-.qty-num.zero { color: rgba(255,255,255,0.08); }
-.qty-num.pop { transform: scale(1.15); }
+.qty-num.zero { color: #C8C4D8; }
+.qty-num.pop { transform: scale(1.12); }
 
 .qty-detail {
   font-size: 0.6rem;
-  color: rgba(255,255,255,0.3);
+  color: var(--text-muted);
   margin-top: 2px;
   min-height: 0.9em;
 }
@@ -266,17 +254,16 @@ h1 {
   justify-content: flex-end;
   margin-top: 6px;
   padding-top: 6px;
-  border-top: 1px solid rgba(255,255,255,0.04);
+  border-top: 1px solid var(--border);
 }
 
 .subtotal {
   font-size: 0.95rem;
   font-weight: 700;
   font-variant-numeric: tabular-nums;
-  color: #D42027;
-  transition: color 0.2s ease;
+  color: var(--blue);
 }
-.subtotal.zero { color: rgba(255,255,255,0.06); }
+.subtotal.zero { color: #C8C4D8; }
 
 .actions {
   display: flex;
@@ -287,9 +274,9 @@ h1 {
 }
 
 .reset {
-  background: transparent;
-  border: 1.5px solid rgba(212,32,39,0.5);
-  color: rgba(255,255,255,0.7);
+  background: var(--pink);
+  border: none;
+  color: #fff;
   font-size: 0.85rem;
   font-weight: 700;
   cursor: pointer;
@@ -299,17 +286,13 @@ h1 {
   -webkit-appearance: none;
   appearance: none;
   text-transform: uppercase;
-  letter-spacing: 0.10em;
-  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  letter-spacing: 0.08em;
+  box-shadow: 0 3px 12px rgba(255,45,120,0.25);
 }
-.reset:active {
-  background: rgba(212,32,39,0.2);
-  border-color: #D42027;
-  color: #fff;
-}
+.reset:active { background: #E0204F; }
 
 @media (prefers-reduced-motion: reduce) {
-  .btn, .header-total, .card, .qty-num, .subtotal, .bg-photo, h1 { transition: none !important; animation: none !important; }
+  .btn, .header-total, .card, .qty-num, .subtotal { transition: none !important; }
 }
 </style>
 </head>
@@ -320,7 +303,9 @@ h1 {
 
 <div class="app">
   <header>
-    <h1>FEQ</h1>
+    <div class="feq-logo">
+      <span class="l-f">F</span><span class="l-e">E</span><span class="l-q">Q</span>
+    </div>
     <p class="festival-name">Festival d'été de Québec</p>
     <hr class="header-divider">
     <div class="header-total zero" id="header-total">0,00 $</div>
@@ -336,7 +321,7 @@ h1 {
 var P = [
   { id:'coors',   name:'Coors Light',   unit:'219 $ / cs de 24', step:1, sp:219,   cases:true },
   { id:'seltzer', name:'Coors Seltzer', unit:'63,75 $ / 6',     step:6, sp:63.75 },
-  { id:'eau',     name:'Eau',           unit:'21,50 $ / 6',     step:6, sp:21.50 }
+  { id:'eau',     name:'Eau',           unit:'21,50 $ / 12',    step:12, sp:21.50 }
 ];
 
 var S = {};
@@ -355,9 +340,9 @@ function sub(p) {
 
 function detail(p) {
   var q = S[p.id];
-  if (!q) return ' ';
+  if (!q) return ' ';
   if (p.cases) return (q * 24) + ' canettes';
-  return ' ';
+  return ' ';
 }
 
 function render(changedId) {
@@ -370,7 +355,6 @@ function render(changedId) {
     var qEl = document.getElementById('q-' + p.id);
     qEl.textContent = q;
     qEl.className = 'qty-num' + (q === 0 ? ' zero' : '');
-
     if (changedId === p.id) {
       qEl.classList.add('pop');
       setTimeout(function(){ qEl.classList.remove('pop'); }, 120);
@@ -413,10 +397,10 @@ document.addEventListener('DOMContentLoaded', function() {
       '</div>' +
       '<div class="stepper">' +
         '<button class="btn btn-minus" id="m-' + p.id + '" disabled ' +
-          'aria-label="Enlever ' + p.name + '">−</button>' +
+          'aria-label="Enlever ' + p.name + '">&#8722;</button>' +
         '<div class="qty-block">' +
           '<div class="qty-num zero" id="q-' + p.id + '">0</div>' +
-          '<div class="qty-detail" id="d-' + p.id + '"> </div>' +
+          '<div class="qty-detail" id="d-' + p.id + '"> </div>' +
         '</div>' +
         '<button class="btn btn-plus" id="p-' + p.id + '" ' +
           'aria-label="Ajouter ' + p.name + '">+</button>' +
