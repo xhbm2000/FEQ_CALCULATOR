@@ -4,9 +4,11 @@
 <meta charset="UTF-8">
 <title>FEQ — Calculateur</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#1a0a0a">
 <style>
 html {
-  background: #0d0d14;
+  background: #1a0a0a;
   color: #f0ede8;
 }
 
@@ -16,7 +18,7 @@ body {
   margin: 0;
   padding: 0;
   font-family: -apple-system, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  background: #0d0d14;
+  background: #1a0a0a;
   color: #f0ede8;
   min-height: 100dvh;
   min-height: 100vh;
@@ -24,17 +26,25 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 
-body::before {
-  content: '';
+.bg-photo {
   position: fixed;
   inset: 0;
-  background:
-    radial-gradient(ellipse at 12% 8%, rgba(228,30,49,0.22) 0%, transparent 55%),
-    radial-gradient(ellipse at 88% 25%, rgba(255,48,80,0.14) 0%, transparent 45%),
-    radial-gradient(ellipse at 35% 92%, rgba(228,30,49,0.12) 0%, transparent 50%),
-    radial-gradient(ellipse at 65% 55%, rgba(180,20,40,0.06) 0%, transparent 60%);
   z-index: 0;
-  pointer-events: none;
+  background: url('bg.jpg') center top / cover no-repeat;
+  filter: brightness(0.3) saturate(1.2);
+}
+
+.bg-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background:
+    linear-gradient(180deg,
+      rgba(26,10,10,0.4) 0%,
+      rgba(26,10,10,0.6) 30%,
+      rgba(26,10,10,0.85) 60%,
+      rgba(26,10,10,0.95) 100%),
+    radial-gradient(ellipse at 50% 0%, rgba(228,30,49,0.25) 0%, transparent 60%);
 }
 
 .app {
@@ -48,29 +58,40 @@ body::before {
 
 header {
   text-align: center;
-  margin-bottom: 24px;
-  padding-top: 4px;
+  margin-bottom: 28px;
+  padding-top: 8px;
 }
 
 h1 {
-  font-size: 3.6rem;
+  font-size: 4rem;
   font-weight: 900;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.22em;
   color: #fff;
   line-height: 1;
   margin: 0;
   text-shadow:
-    0 0 25px rgba(228,30,49,0.8),
-    0 0 50px rgba(228,30,49,0.5),
-    0 0 90px rgba(228,30,49,0.25);
+    0 0 30px rgba(228,30,49,0.9),
+    0 0 60px rgba(228,30,49,0.5),
+    0 0 100px rgba(228,30,49,0.3),
+    0 2px 4px rgba(0,0,0,0.5);
 }
 
 .sub {
-  font-size: 0.72rem;
-  color: #6a6480;
+  font-size: 0.7rem;
+  color: rgba(240,237,232,0.5);
   text-transform: uppercase;
-  letter-spacing: 0.16em;
-  margin: 8px 0 0;
+  letter-spacing: 0.2em;
+  margin: 10px 0 0;
+}
+
+.sub-line {
+  display: block;
+  width: 40px;
+  height: 2px;
+  background: #E41E31;
+  margin: 10px auto 0;
+  border-radius: 1px;
+  box-shadow: 0 0 8px rgba(228,30,49,0.6);
 }
 
 .products {
@@ -80,18 +101,18 @@ h1 {
 }
 
 .card {
-  background: rgba(22,22,40,0.75);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(255,255,255,0.05);
-  border-radius: 12px;
+  background: rgba(20,8,8,0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(228,30,49,0.08);
+  border-radius: 14px;
   padding: 14px 16px;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .card.active {
-  border-color: rgba(228,30,49,0.35);
-  box-shadow: 0 0 20px rgba(228,30,49,0.1);
+  border-color: rgba(228,30,49,0.4);
+  box-shadow: 0 0 24px rgba(228,30,49,0.12), inset 0 0 20px rgba(228,30,49,0.04);
 }
 
 .card-top {
@@ -109,7 +130,7 @@ h1 {
 
 .card-unit {
   font-size: 0.7rem;
-  color: #5c5870;
+  color: rgba(240,237,232,0.35);
   white-space: nowrap;
   flex-shrink: 0;
 }
@@ -147,23 +168,23 @@ h1 {
 
 .btn-minus {
   background: rgba(255,255,255,0.06);
-  color: #5c5870;
-  border: 1px solid rgba(255,255,255,0.07);
+  color: rgba(240,237,232,0.3);
+  border: 1px solid rgba(255,255,255,0.08);
 }
 .btn-minus:active:not(:disabled) {
   background: rgba(255,255,255,0.12);
-  color: #9a94a8;
+  color: rgba(240,237,232,0.6);
 }
 .btn-minus:disabled { opacity: 0.15; cursor: default; }
 
 .btn-plus {
   background: #E41E31;
   color: #fff;
-  box-shadow: 0 3px 14px rgba(228,30,49,0.35);
+  box-shadow: 0 4px 16px rgba(228,30,49,0.4), 0 0 30px rgba(228,30,49,0.15);
 }
 .btn-plus:active {
   background: #ff3050;
-  box-shadow: 0 3px 18px rgba(255,48,80,0.45);
+  box-shadow: 0 4px 20px rgba(255,48,80,0.5);
 }
 
 .qty-block { text-align: center; min-width: 80px; }
@@ -176,11 +197,11 @@ h1 {
   color: #fff;
   transition: color 0.15s;
 }
-.qty-num.zero { color: #2a2840; }
+.qty-num.zero { color: rgba(255,255,255,0.1); }
 
 .qty-detail {
   font-size: 0.68rem;
-  color: #5c5870;
+  color: rgba(240,237,232,0.35);
   margin-top: 2px;
   min-height: 1em;
 }
@@ -190,7 +211,7 @@ h1 {
   justify-content: flex-end;
   margin-top: 10px;
   padding-top: 8px;
-  border-top: 1px solid rgba(255,255,255,0.04);
+  border-top: 1px solid rgba(228,30,49,0.08);
 }
 
 .subtotal {
@@ -200,7 +221,7 @@ h1 {
   color: #E41E31;
   transition: color 0.15s;
 }
-.subtotal.zero { color: #2a2840; }
+.subtotal.zero { color: rgba(228,30,49,0.15); }
 
 .actions {
   display: flex;
@@ -211,8 +232,8 @@ h1 {
 
 .reset {
   background: none;
-  border: 1px solid rgba(255,255,255,0.07);
-  color: #5c5870;
+  border: 1px solid rgba(255,255,255,0.08);
+  color: rgba(240,237,232,0.4);
   font-size: 0.78rem;
   cursor: pointer;
   padding: 8px 22px;
@@ -237,6 +258,7 @@ h1 {
   -webkit-appearance: none;
   appearance: none;
   letter-spacing: 0.02em;
+  box-shadow: 0 3px 12px rgba(228,30,49,0.35);
 }
 .share-btn:active { background: #ff3050; }
 .share-btn:focus-visible { outline: 2px solid #E41E31; outline-offset: 3px; }
@@ -246,7 +268,9 @@ h1 {
   top: 20px;
   left: 50%;
   transform: translateX(-50%) translateY(-80px);
-  background: #1a1a2e;
+  background: rgba(20,8,8,0.92);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border: 1px solid rgba(228,30,49,0.4);
   color: #f0ede8;
   padding: 10px 20px;
@@ -268,12 +292,13 @@ h1 {
   left: 0;
   right: 0;
   z-index: 100;
-  background: rgba(10,10,18,0.92);
+  background: rgba(20,8,8,0.92);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   border-top: 2px solid #E41E31;
   padding: 14px 18px;
   padding-bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+  box-shadow: 0 -8px 30px rgba(228,30,49,0.1);
 }
 
 .total-inner {
@@ -289,7 +314,7 @@ h1 {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: #6a6480;
+  color: rgba(240,237,232,0.45);
 }
 
 .total-amount {
@@ -298,6 +323,7 @@ h1 {
   font-variant-numeric: tabular-nums;
   color: #fff;
   transition: transform 0.1s ease;
+  text-shadow: 0 0 20px rgba(228,30,49,0.3);
 }
 .total-amount.bump { transform: scale(1.06); }
 
@@ -308,10 +334,14 @@ h1 {
 </head>
 <body>
 
+<div class="bg-photo"></div>
+<div class="bg-overlay"></div>
+
 <div class="app">
   <header>
     <h1>FEQ</h1>
     <p class="sub">Calculateur de boissons</p>
+    <span class="sub-line"></span>
   </header>
   <div id="products" class="products"></div>
   <div class="actions" id="actions" hidden>
@@ -352,9 +382,9 @@ function sub(p) {
 
 function detail(p) {
   var q = S[p.id];
-  if (!q) return ' ';
+  if (!q) return ' ';
   if (p.cases) return (q * 24) + ' canettes';
-  return ' ';
+  return ' ';
 }
 
 function render() {
@@ -364,7 +394,7 @@ function render() {
     grand += st;
     if (q > 0) any = true;
 
-    document.getElementById('q-' + p.id).textContent = p.cases ? q : q;
+    document.getElementById('q-' + p.id).textContent = q;
     document.getElementById('q-' + p.id).className = 'qty-num' + (q === 0 ? ' zero' : '');
     document.getElementById('d-' + p.id).textContent = detail(p);
     document.getElementById('s-' + p.id).textContent = fmt(st);
@@ -445,7 +475,7 @@ document.addEventListener('DOMContentLoaded', function() {
           'aria-label="Enlever ' + p.name + '">−</button>' +
         '<div class="qty-block">' +
           '<div class="qty-num zero" id="q-' + p.id + '">0</div>' +
-          '<div class="qty-detail" id="d-' + p.id + '"> </div>' +
+          '<div class="qty-detail" id="d-' + p.id + '"> </div>' +
         '</div>' +
         '<button class="btn btn-plus" id="p-' + p.id + '" ' +
           'aria-label="Ajouter ' + p.name + '">+</button>' +
