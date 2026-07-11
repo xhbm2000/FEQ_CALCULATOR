@@ -307,17 +307,134 @@ header {
   text-decoration: none;
 }
 
+.login-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 18px;
+  padding: 20px;
+}
+
+.login-screen.hidden { display: none; }
+
+.login-logo {
+  display: flex;
+  gap: 6px;
+}
+.login-logo span {
+  font-size: 4rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  line-height: 1;
+}
+.login-logo .l-f { color: var(--blue); }
+.login-logo .l-e { color: var(--pink); }
+.login-logo .l-q { color: var(--green); }
+
+.login-sub {
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-top: 10px;
+  width: 100%;
+  max-width: 280px;
+}
+
+.login-input {
+  width: 100%;
+  padding: 14px 18px;
+  border-radius: 12px;
+  border: 1.5px solid var(--border);
+  background: rgba(255,255,255,0.7);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+  text-align: center;
+  letter-spacing: 0.1em;
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.login-input:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(61,90,254,0.12);
+}
+.login-input.error {
+  border-color: var(--pink);
+  animation: shake 0.4s ease;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-8px); }
+  75% { transform: translateX(8px); }
+}
+
+.login-btn {
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  border: none;
+  background: var(--blue);
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  box-shadow: 0 4px 14px rgba(61,90,254,0.25);
+  -webkit-appearance: none;
+  appearance: none;
+  touch-action: manipulation;
+}
+.login-btn:active { background: #304FFE; }
+
+.login-error {
+  font-size: 0.72rem;
+  color: var(--pink);
+  font-weight: 600;
+  min-height: 1.2em;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .btn, .header-total, .card, .qty-num, .subtotal { transition: none !important; }
+  .login-input.error { animation: none !important; }
 }
 </style>
 </head>
 <body>
 
+<div class="login-screen" id="login-screen">
+  <div class="login-logo">
+    <span class="l-f">F</span><span class="l-e">E</span><span class="l-q">Q</span>
+  </div>
+  <p class="login-sub">Calculateur de boissons</p>
+  <div class="login-form">
+    <input type="password" class="login-input" id="login-pw" placeholder="Mot de passe" autocomplete="off">
+    <button class="login-btn" id="login-btn">Entrer</button>
+    <div class="login-error" id="login-error">&nbsp;</div>
+  </div>
+</div>
+
 <div class="bg-photo"></div>
 <div class="bg-overlay"></div>
 
-<div class="app">
+<div class="app" id="app" style="display:none">
   <header>
     <div class="feq-logo">
       <span class="l-f">F</span><span class="l-e">E</span><span class="l-q">Q</span>
@@ -338,6 +455,36 @@ header {
 </div>
 
 <script>
+(function() {
+  var PWD = 'feq2026';
+  var ls = document.getElementById('login-screen');
+  var pw = document.getElementById('login-pw');
+  var btn = document.getElementById('login-btn');
+  var err = document.getElementById('login-error');
+
+  if (sessionStorage.getItem('feq_auth') === '1') {
+    ls.classList.add('hidden');
+    document.getElementById('app').style.display = '';
+  }
+
+  function tryLogin() {
+    if (pw.value.toLowerCase() === PWD) {
+      sessionStorage.setItem('feq_auth', '1');
+      ls.classList.add('hidden');
+      document.getElementById('app').style.display = '';
+    } else {
+      pw.classList.add('error');
+      err.textContent = 'Mot de passe incorrect';
+      setTimeout(function(){ pw.classList.remove('error'); }, 500);
+    }
+  }
+
+  btn.addEventListener('click', tryLogin);
+  pw.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') tryLogin();
+  });
+})();
+
 var P = [
   { id:'coors',   name:'Coors Light',   unit:'219 $ / cs de 24', step:1, sp:219,   cases:true },
   { id:'seltzer', name:'Coors Seltzer', unit:'63,75 $ / 6',     step:6, sp:63.75 },
