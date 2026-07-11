@@ -7,31 +7,26 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#1a0a0a">
 <style>
-html {
-  background: #1a0a0a;
-  color: #f0ede8;
-}
-
-*, *::before, *::after { box-sizing: border-box; }
-
-body {
+html, body {
   margin: 0;
   padding: 0;
-  font-family: -apple-system, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   background: #1a0a0a;
   color: #f0ede8;
-  min-height: 100dvh;
-  min-height: 100vh;
+  font-family: -apple-system, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  height: 100%;
+  overflow: hidden;
   -webkit-font-smoothing: antialiased;
   -webkit-tap-highlight-color: transparent;
 }
+
+*, *::before, *::after { box-sizing: border-box; }
 
 .bg-photo {
   position: fixed;
   inset: 0;
   z-index: 0;
   background: url('bg.jpg') center top / cover no-repeat;
-  filter: brightness(0.3) saturate(1.2);
+  filter: brightness(0.25) saturate(1.3);
 }
 
 .bg-overlay {
@@ -40,64 +35,59 @@ body {
   z-index: 0;
   background:
     linear-gradient(180deg,
-      rgba(26,10,10,0.4) 0%,
-      rgba(26,10,10,0.6) 30%,
-      rgba(26,10,10,0.85) 60%,
+      rgba(26,10,10,0.3) 0%,
+      rgba(26,10,10,0.55) 25%,
+      rgba(26,10,10,0.82) 55%,
       rgba(26,10,10,0.95) 100%),
-    radial-gradient(ellipse at 50% 0%, rgba(228,30,49,0.25) 0%, transparent 60%);
+    radial-gradient(ellipse at 50% 0%, rgba(228,30,49,0.3) 0%, transparent 55%);
 }
 
 .app {
   position: relative;
   z-index: 1;
   width: 100%;
-  max-width: 480px;
+  max-width: 420px;
   margin: 0 auto;
-  padding: 20px 14px 140px;
+  padding: 12px 14px 0;
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+  height: 100vh;
 }
 
 header {
   text-align: center;
-  margin-bottom: 28px;
-  padding-top: 8px;
+  padding: 6px 0 10px;
+  flex-shrink: 0;
 }
 
 h1 {
-  font-size: 4rem;
+  font-size: 2.6rem;
   font-weight: 900;
   letter-spacing: 0.22em;
   color: #fff;
   line-height: 1;
   margin: 0;
   text-shadow:
-    0 0 30px rgba(228,30,49,0.9),
-    0 0 60px rgba(228,30,49,0.5),
-    0 0 100px rgba(228,30,49,0.3),
-    0 2px 4px rgba(0,0,0,0.5);
+    0 0 25px rgba(228,30,49,0.9),
+    0 0 50px rgba(228,30,49,0.5),
+    0 0 90px rgba(228,30,49,0.3);
 }
 
 .sub {
-  font-size: 0.7rem;
-  color: rgba(240,237,232,0.5);
+  font-size: 0.65rem;
+  color: rgba(240,237,232,0.45);
   text-transform: uppercase;
-  letter-spacing: 0.2em;
-  margin: 10px 0 0;
-}
-
-.sub-line {
-  display: block;
-  width: 40px;
-  height: 2px;
-  background: #E41E31;
-  margin: 10px auto 0;
-  border-radius: 1px;
-  box-shadow: 0 0 8px rgba(228,30,49,0.6);
+  letter-spacing: 0.18em;
+  margin: 5px 0 0;
 }
 
 .products {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
+  flex: 1;
+  justify-content: center;
 }
 
 .card {
@@ -105,32 +95,32 @@ h1 {
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(228,30,49,0.08);
-  border-radius: 14px;
-  padding: 14px 16px;
+  border-radius: 12px;
+  padding: 10px 14px;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .card.active {
   border-color: rgba(228,30,49,0.4);
-  box-shadow: 0 0 24px rgba(228,30,49,0.12), inset 0 0 20px rgba(228,30,49,0.04);
+  box-shadow: 0 0 20px rgba(228,30,49,0.1), inset 0 0 16px rgba(228,30,49,0.04);
 }
 
 .card-top {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
   gap: 8px;
 }
 
 .card-name {
-  font-size: 1rem;
+  font-size: 0.92rem;
   font-weight: 700;
 }
 
 .card-unit {
-  font-size: 0.7rem;
-  color: rgba(240,237,232,0.35);
+  font-size: 0.65rem;
+  color: rgba(240,237,232,0.3);
   white-space: nowrap;
   flex-shrink: 0;
 }
@@ -139,15 +129,15 @@ h1 {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 18px;
+  gap: 16px;
 }
 
 .btn {
-  width: 56px;
-  height: 56px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   border: none;
-  font-size: 1.6rem;
+  font-size: 1.4rem;
   font-weight: 700;
   cursor: pointer;
   display: flex;
@@ -180,17 +170,17 @@ h1 {
 .btn-plus {
   background: #E41E31;
   color: #fff;
-  box-shadow: 0 4px 16px rgba(228,30,49,0.4), 0 0 30px rgba(228,30,49,0.15);
+  box-shadow: 0 3px 14px rgba(228,30,49,0.4);
 }
 .btn-plus:active {
   background: #ff3050;
-  box-shadow: 0 4px 20px rgba(255,48,80,0.5);
+  box-shadow: 0 3px 18px rgba(255,48,80,0.5);
 }
 
-.qty-block { text-align: center; min-width: 80px; }
+.qty-block { text-align: center; min-width: 70px; }
 
 .qty-num {
-  font-size: 2.8rem;
+  font-size: 2.2rem;
   font-weight: 800;
   font-variant-numeric: tabular-nums;
   line-height: 1;
@@ -200,22 +190,22 @@ h1 {
 .qty-num.zero { color: rgba(255,255,255,0.1); }
 
 .qty-detail {
-  font-size: 0.68rem;
+  font-size: 0.62rem;
   color: rgba(240,237,232,0.35);
-  margin-top: 2px;
-  min-height: 1em;
+  margin-top: 1px;
+  min-height: 0.9em;
 }
 
 .card-bottom {
   display: flex;
   justify-content: flex-end;
-  margin-top: 10px;
-  padding-top: 8px;
+  margin-top: 6px;
+  padding-top: 6px;
   border-top: 1px solid rgba(228,30,49,0.08);
 }
 
 .subtotal {
-  font-size: 1.05rem;
+  font-size: 0.95rem;
   font-weight: 700;
   font-variant-numeric: tabular-nums;
   color: #E41E31;
@@ -226,56 +216,55 @@ h1 {
 .actions {
   display: flex;
   gap: 10px;
-  margin-top: 16px;
+  padding: 10px 0;
   justify-content: center;
+  flex-shrink: 0;
 }
 
 .reset {
   background: none;
   border: 1px solid rgba(255,255,255,0.08);
   color: rgba(240,237,232,0.4);
-  font-size: 0.78rem;
+  font-size: 0.75rem;
   cursor: pointer;
-  padding: 8px 22px;
+  padding: 7px 18px;
   border-radius: 20px;
   touch-action: manipulation;
   -webkit-appearance: none;
   appearance: none;
 }
 .reset:active { color: #f0ede8; border-color: rgba(228,30,49,0.3); }
-.reset:focus-visible { outline: 2px solid #E41E31; outline-offset: 2px; }
 
 .share-btn {
   background: #E41E31;
   border: none;
   color: #fff;
-  font-size: 0.82rem;
+  font-size: 0.78rem;
   font-weight: 600;
   cursor: pointer;
-  padding: 10px 24px;
+  padding: 8px 20px;
   border-radius: 20px;
   touch-action: manipulation;
   -webkit-appearance: none;
   appearance: none;
   letter-spacing: 0.02em;
-  box-shadow: 0 3px 12px rgba(228,30,49,0.35);
+  box-shadow: 0 3px 10px rgba(228,30,49,0.35);
 }
 .share-btn:active { background: #ff3050; }
-.share-btn:focus-visible { outline: 2px solid #E41E31; outline-offset: 3px; }
 
 .toast {
   position: fixed;
-  top: 20px;
+  top: 16px;
   left: 50%;
-  transform: translateX(-50%) translateY(-80px);
+  transform: translateX(-50%) translateY(-70px);
   background: rgba(20,8,8,0.92);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border: 1px solid rgba(228,30,49,0.4);
   color: #f0ede8;
-  padding: 10px 20px;
+  padding: 8px 18px;
   border-radius: 10px;
-  font-size: 0.82rem;
+  font-size: 0.78rem;
   z-index: 200;
   opacity: 0;
   transition: transform 0.25s ease, opacity 0.25s ease;
@@ -287,30 +276,24 @@ h1 {
 }
 
 .total-bar {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 100;
+  flex-shrink: 0;
   background: rgba(20,8,8,0.92);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   border-top: 2px solid #E41E31;
-  padding: 14px 18px;
-  padding-bottom: calc(14px + env(safe-area-inset-bottom, 0px));
-  box-shadow: 0 -8px 30px rgba(228,30,49,0.1);
+  padding: 10px 4px;
+  padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+  box-shadow: 0 -6px 24px rgba(228,30,49,0.1);
 }
 
 .total-inner {
-  max-width: 480px;
-  margin: 0 auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
 .total-label {
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.1em;
@@ -318,12 +301,12 @@ h1 {
 }
 
 .total-amount {
-  font-size: 2.2rem;
+  font-size: 1.9rem;
   font-weight: 800;
   font-variant-numeric: tabular-nums;
   color: #fff;
   transition: transform 0.1s ease;
-  text-shadow: 0 0 20px rgba(228,30,49,0.3);
+  text-shadow: 0 0 16px rgba(228,30,49,0.3);
 }
 .total-amount.bump { transform: scale(1.06); }
 
@@ -341,29 +324,27 @@ h1 {
   <header>
     <h1>FEQ</h1>
     <p class="sub">Calculateur de boissons</p>
-    <span class="sub-line"></span>
   </header>
   <div id="products" class="products"></div>
   <div class="actions" id="actions" hidden>
     <button id="reset" class="reset">Tout effacer</button>
     <button id="share" class="share-btn">Envoyer le total</button>
   </div>
-  <div class="toast" id="toast">Copie dans le presse-papier</div>
-</div>
-
-<div class="total-bar">
-  <div class="total-inner">
-    <span class="total-label">Total</span>
-    <span class="total-amount" id="total">0,00 $</span>
+  <div class="total-bar">
+    <div class="total-inner">
+      <span class="total-label">Total</span>
+      <span class="total-amount" id="total">0,00 $</span>
+    </div>
   </div>
 </div>
+
+<div class="toast" id="toast">Copie dans le presse-papier</div>
 
 <script>
 var P = [
   { id:'coors',   name:'Coors Light',   unit:'219 $ / cs de 24', step:1, sp:219,   cases:true },
   { id:'seltzer', name:'Coors Seltzer', unit:'63,75 $ / 6',     step:6, sp:63.75 },
-  { id:'eau',     name:'Eau',           unit:'21,50 $ / 6',     step:6, sp:21.50 },
-  { id:'shooters',name:'Shooters',      unit:'117 $ / bouteille', step:1, sp:117  }
+  { id:'eau',     name:'Eau',           unit:'21,50 $ / 6',     step:6, sp:21.50 }
 ];
 
 var S = {};
@@ -382,9 +363,9 @@ function sub(p) {
 
 function detail(p) {
   var q = S[p.id];
-  if (!q) return ' ';
+  if (!q) return ' ';
   if (p.cases) return (q * 24) + ' canettes';
-  return ' ';
+  return ' ';
 }
 
 function render() {
@@ -421,10 +402,8 @@ function buildSummary() {
     var label = p.name;
     if (p.cases) {
       lines.push(q + ' cs ' + label + ' (' + (q * 24) + ' canettes) — ' + fmt(st));
-    } else if (p.step === 6) {
-      lines.push(q + ' ' + label + ' — ' + fmt(st));
     } else {
-      lines.push(q + ' bte ' + label + ' — ' + fmt(st));
+      lines.push(q + ' ' + label + ' — ' + fmt(st));
     }
   });
   lines.push('');
@@ -475,7 +454,7 @@ document.addEventListener('DOMContentLoaded', function() {
           'aria-label="Enlever ' + p.name + '">−</button>' +
         '<div class="qty-block">' +
           '<div class="qty-num zero" id="q-' + p.id + '">0</div>' +
-          '<div class="qty-detail" id="d-' + p.id + '"> </div>' +
+          '<div class="qty-detail" id="d-' + p.id + '"> </div>' +
         '</div>' +
         '<button class="btn btn-plus" id="p-' + p.id + '" ' +
           'aria-label="Ajouter ' + p.name + '">+</button>' +
