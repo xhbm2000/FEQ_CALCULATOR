@@ -5,12 +5,12 @@
 <title>FEQ — Calculateur</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="theme-color" content="#1a0a0a">
+<meta name="theme-color" content="#0a0006">
 <style>
 html, body {
   margin: 0;
   padding: 0;
-  background: #1a0a0a;
+  background: #0a0006;
   color: #f0ede8;
   font-family: -apple-system, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   height: 100%;
@@ -23,10 +23,16 @@ html, body {
 
 .bg-photo {
   position: fixed;
-  inset: 0;
+  inset: -10px;
   z-index: 0;
   background: url('bg.jpg') center top / cover no-repeat;
-  filter: brightness(0.25) saturate(1.3);
+  filter: brightness(0.15) saturate(1.6) contrast(1.1);
+  animation: slowDrift 30s ease-in-out infinite alternate;
+}
+
+@keyframes slowDrift {
+  0%   { transform: scale(1.0) translate(0, 0); }
+  100% { transform: scale(1.06) translate(-8px, -4px); }
 }
 
 .bg-overlay {
@@ -34,12 +40,13 @@ html, body {
   inset: 0;
   z-index: 0;
   background:
+    radial-gradient(ellipse at 50% 0%, rgba(212,32,39,0.30) 0%, transparent 50%),
+    radial-gradient(ellipse at 20% 100%, rgba(212,32,39,0.10) 0%, transparent 40%),
     linear-gradient(180deg,
-      rgba(26,10,10,0.3) 0%,
-      rgba(26,10,10,0.55) 25%,
-      rgba(26,10,10,0.82) 55%,
-      rgba(26,10,10,0.95) 100%),
-    radial-gradient(ellipse at 50% 0%, rgba(228,30,49,0.3) 0%, transparent 55%);
+      rgba(10,0,6,0.3) 0%,
+      rgba(10,0,6,0.65) 30%,
+      rgba(10,0,6,0.88) 60%,
+      rgba(10,0,6,0.96) 100%);
 }
 
 .app {
@@ -48,7 +55,7 @@ html, body {
   width: 100%;
   max-width: 420px;
   margin: 0 auto;
-  padding: 12px 14px 0;
+  padding: 0 14px;
   display: flex;
   flex-direction: column;
   height: 100dvh;
@@ -57,41 +64,67 @@ html, body {
 
 header {
   text-align: center;
-  padding: 6px 0 10px;
+  padding: 16px 0 10px;
   flex-shrink: 0;
+  margin-bottom: 4px;
 }
 
 h1 {
-  font-size: 2.6rem;
+  font-size: 3.4rem;
   font-weight: 900;
-  letter-spacing: 0.22em;
+  letter-spacing: 0.28em;
   color: #fff;
   line-height: 1;
   margin: 0;
   text-shadow:
-    0 0 25px rgba(228,30,49,0.9),
-    0 0 50px rgba(228,30,49,0.5),
-    0 0 90px rgba(228,30,49,0.3);
+    0 0 20px rgba(212,32,39,0.9),
+    0 0 50px rgba(212,32,39,0.5),
+    0 0 100px rgba(212,32,39,0.25),
+    0 2px 4px rgba(0,0,0,0.5);
+  animation: glowPulse 3s ease-in-out infinite;
 }
 
-.sub {
-  font-size: 0.65rem;
-  color: rgba(240,237,232,0.45);
+@keyframes glowPulse {
+  0%, 100% { text-shadow: 0 0 20px rgba(212,32,39,0.9), 0 0 50px rgba(212,32,39,0.5), 0 0 100px rgba(212,32,39,0.25), 0 2px 4px rgba(0,0,0,0.5); }
+  50%      { text-shadow: 0 0 30px rgba(212,32,39,1.0), 0 0 70px rgba(212,32,39,0.6), 0 0 120px rgba(212,32,39,0.35), 0 2px 4px rgba(0,0,0,0.5); }
+}
+
+.festival-name {
+  font-size: 0.58rem;
+  font-weight: 600;
+  color: rgba(212,32,39,0.7);
   text-transform: uppercase;
-  letter-spacing: 0.18em;
-  margin: 5px 0 0;
+  letter-spacing: 0.30em;
+  margin: 6px 0 0;
+}
+
+.header-divider {
+  width: 60px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #D42027, transparent);
+  margin: 10px auto 8px;
+  border: none;
 }
 
 .header-total {
-  font-size: 2rem;
-  font-weight: 800;
+  font-size: 2.4rem;
+  font-weight: 900;
   font-variant-numeric: tabular-nums;
-  color: #E41E31;
-  margin: 8px 0 0;
-  text-shadow: 0 0 20px rgba(228,30,49,0.4);
-  transition: transform 0.1s ease;
+  color: #fff;
+  margin: 0;
+  transition: transform 0.12s ease, color 0.2s ease;
 }
+.header-total.zero { color: rgba(255,255,255,0.12); }
 .header-total.bump { transform: scale(1.08); }
+
+.header-total-label {
+  font-size: 0.55rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: rgba(255,255,255,0.25);
+  margin: 2px 0 0;
+}
 
 .products {
   display: flex;
@@ -99,21 +132,39 @@ h1 {
   gap: 8px;
   flex: 1;
   justify-content: center;
+  padding: 4px 0;
 }
 
 .card {
-  background: rgba(20,8,8,0.7);
+  background: rgba(255,255,255,0.04);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(228,30,49,0.08);
-  border-radius: 12px;
-  padding: 10px 14px;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 14px;
+  padding: 12px 14px;
+  transition: border-color 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 14px;
+  opacity: 0;
+  background: radial-gradient(ellipse at 50% 0%, rgba(212,32,39,0.15) 0%, transparent 70%);
+  transition: opacity 0.3s ease;
+  pointer-events: none;
 }
 
 .card.active {
-  border-color: rgba(228,30,49,0.4);
-  box-shadow: 0 0 20px rgba(228,30,49,0.1), inset 0 0 16px rgba(228,30,49,0.04);
+  border-color: rgba(212,32,39,0.4);
+  box-shadow: 0 0 25px rgba(212,32,39,0.08), inset 0 0 20px rgba(212,32,39,0.03);
+}
+
+.card.active::before {
+  opacity: 1;
 }
 
 .card-top {
@@ -121,17 +172,19 @@ h1 {
   justify-content: space-between;
   align-items: baseline;
   margin-bottom: 8px;
-  gap: 8px;
+  gap: 6px;
 }
 
 .card-name {
   font-size: 0.92rem;
   font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #f0ede8;
 }
 
 .card-unit {
-  font-size: 0.65rem;
-  color: rgba(240,237,232,0.3);
+  font-size: 0.6rem;
+  color: rgba(255,255,255,0.25);
   white-space: nowrap;
   flex-shrink: 0;
 }
@@ -144,11 +197,11 @@ h1 {
 }
 
 .btn {
-  width: 48px;
-  height: 48px;
+  width: 52px;
+  height: 52px;
   border-radius: 50%;
   border: none;
-  font-size: 1.4rem;
+  font-size: 1.5rem;
   font-weight: 700;
   cursor: pointer;
   display: flex;
@@ -159,51 +212,52 @@ h1 {
   touch-action: manipulation;
   line-height: 1;
   flex-shrink: 0;
-  transition: transform 0.08s ease;
+  transition: transform 0.08s ease, box-shadow 0.2s ease;
   -webkit-appearance: none;
   appearance: none;
 }
 
 .btn:active:not(:disabled) { transform: scale(0.86); }
-.btn:focus-visible { outline: 2px solid #E41E31; outline-offset: 3px; }
+.btn:focus-visible { outline: 2px solid #D42027; outline-offset: 3px; }
 
 .btn-minus {
   background: rgba(255,255,255,0.06);
-  color: rgba(240,237,232,0.3);
+  color: rgba(255,255,255,0.3);
   border: 1px solid rgba(255,255,255,0.08);
 }
 .btn-minus:active:not(:disabled) {
-  background: rgba(255,255,255,0.12);
-  color: rgba(240,237,232,0.6);
+  background: rgba(255,255,255,0.14);
+  color: #fff;
 }
-.btn-minus:disabled { opacity: 0.15; cursor: default; }
+.btn-minus:disabled { opacity: 0.12; cursor: default; }
 
 .btn-plus {
-  background: #E41E31;
+  background: #D42027;
   color: #fff;
-  box-shadow: 0 3px 14px rgba(228,30,49,0.4);
+  box-shadow: 0 4px 18px rgba(212,32,39,0.45), 0 0 30px rgba(212,32,39,0.15);
 }
 .btn-plus:active {
-  background: #ff3050;
-  box-shadow: 0 3px 18px rgba(255,48,80,0.5);
+  background: #ff3040;
+  box-shadow: 0 4px 24px rgba(255,48,64,0.55), 0 0 40px rgba(212,32,39,0.25);
 }
 
-.qty-block { text-align: center; min-width: 70px; }
+.qty-block { text-align: center; min-width: 72px; }
 
 .qty-num {
-  font-size: 2.2rem;
-  font-weight: 800;
+  font-size: 2.6rem;
+  font-weight: 900;
   font-variant-numeric: tabular-nums;
   line-height: 1;
   color: #fff;
-  transition: color 0.15s;
+  transition: color 0.2s ease, transform 0.1s ease;
 }
-.qty-num.zero { color: rgba(255,255,255,0.1); }
+.qty-num.zero { color: rgba(255,255,255,0.08); }
+.qty-num.pop { transform: scale(1.15); }
 
 .qty-detail {
-  font-size: 0.62rem;
-  color: rgba(240,237,232,0.35);
-  margin-top: 1px;
+  font-size: 0.6rem;
+  color: rgba(255,255,255,0.3);
+  margin-top: 2px;
   min-height: 0.9em;
 }
 
@@ -212,43 +266,50 @@ h1 {
   justify-content: flex-end;
   margin-top: 6px;
   padding-top: 6px;
-  border-top: 1px solid rgba(228,30,49,0.08);
+  border-top: 1px solid rgba(255,255,255,0.04);
 }
 
 .subtotal {
   font-size: 0.95rem;
   font-weight: 700;
   font-variant-numeric: tabular-nums;
-  color: #E41E31;
-  transition: color 0.15s;
+  color: #D42027;
+  transition: color 0.2s ease;
 }
-.subtotal.zero { color: rgba(228,30,49,0.15); }
+.subtotal.zero { color: rgba(255,255,255,0.06); }
 
 .actions {
   display: flex;
-  gap: 10px;
   padding: 10px 0;
+  padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px));
   justify-content: center;
   flex-shrink: 0;
 }
 
 .reset {
-  background: rgba(228,30,49,0.15);
-  border: 1px solid rgba(228,30,49,0.3);
-  color: #E41E31;
-  font-size: 0.95rem;
-  font-weight: 600;
+  background: transparent;
+  border: 1.5px solid rgba(212,32,39,0.5);
+  color: rgba(255,255,255,0.7);
+  font-size: 0.85rem;
+  font-weight: 700;
   cursor: pointer;
-  padding: 12px 32px;
-  border-radius: 25px;
+  padding: 13px 44px;
+  border-radius: 28px;
   touch-action: manipulation;
   -webkit-appearance: none;
   appearance: none;
+  text-transform: uppercase;
+  letter-spacing: 0.10em;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
-.reset:active { background: rgba(228,30,49,0.3); color: #fff; }
+.reset:active {
+  background: rgba(212,32,39,0.2);
+  border-color: #D42027;
+  color: #fff;
+}
 
 @media (prefers-reduced-motion: reduce) {
-  .btn, .total-amount, .card, .qty-num, .subtotal { transition: none !important; }
+  .btn, .header-total, .card, .qty-num, .subtotal, .bg-photo, h1 { transition: none !important; animation: none !important; }
 }
 </style>
 </head>
@@ -260,15 +321,16 @@ h1 {
 <div class="app">
   <header>
     <h1>FEQ</h1>
-    <p class="sub">Calculateur de boissons</p>
-    <div class="header-total" id="header-total">0,00 $</div>
+    <p class="festival-name">Festival d'été de Québec</p>
+    <hr class="header-divider">
+    <div class="header-total zero" id="header-total">0,00 $</div>
+    <p class="header-total-label">Total de la commande</p>
   </header>
   <div id="products" class="products"></div>
   <div class="actions" id="actions" hidden>
     <button id="reset" class="reset">Tout effacer</button>
   </div>
 </div>
-
 
 <script>
 var P = [
@@ -293,20 +355,27 @@ function sub(p) {
 
 function detail(p) {
   var q = S[p.id];
-  if (!q) return ' ';
+  if (!q) return ' ';
   if (p.cases) return (q * 24) + ' canettes';
-  return ' ';
+  return ' ';
 }
 
-function render() {
+function render(changedId) {
   var grand = 0, any = false;
   P.forEach(function(p) {
     var q = S[p.id], st = sub(p);
     grand += st;
     if (q > 0) any = true;
 
-    document.getElementById('q-' + p.id).textContent = q;
-    document.getElementById('q-' + p.id).className = 'qty-num' + (q === 0 ? ' zero' : '');
+    var qEl = document.getElementById('q-' + p.id);
+    qEl.textContent = q;
+    qEl.className = 'qty-num' + (q === 0 ? ' zero' : '');
+
+    if (changedId === p.id) {
+      qEl.classList.add('pop');
+      setTimeout(function(){ qEl.classList.remove('pop'); }, 120);
+    }
+
     document.getElementById('d-' + p.id).textContent = detail(p);
     document.getElementById('s-' + p.id).textContent = fmt(st);
     document.getElementById('s-' + p.id).className = 'subtotal' + (q === 0 ? ' zero' : '');
@@ -316,8 +385,9 @@ function render() {
 
   var te = document.getElementById('header-total');
   te.textContent = fmt(grand);
+  te.className = 'header-total' + (grand === 0 ? ' zero' : '');
   te.classList.add('bump');
-  setTimeout(function(){ te.classList.remove('bump'); }, 120);
+  setTimeout(function(){ te.classList.remove('bump'); }, 130);
   document.getElementById('actions').hidden = !any;
 }
 
@@ -327,7 +397,7 @@ function chg(id, dir) {
   var nv = S[id] + dir * p.step;
   if (nv < 0) return;
   S[id] = nv;
-  render();
+  render(id);
 }
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -346,7 +416,7 @@ document.addEventListener('DOMContentLoaded', function() {
           'aria-label="Enlever ' + p.name + '">−</button>' +
         '<div class="qty-block">' +
           '<div class="qty-num zero" id="q-' + p.id + '">0</div>' +
-          '<div class="qty-detail" id="d-' + p.id + '"> </div>' +
+          '<div class="qty-detail" id="d-' + p.id + '"> </div>' +
         '</div>' +
         '<button class="btn btn-plus" id="p-' + p.id + '" ' +
           'aria-label="Ajouter ' + p.name + '">+</button>' +
@@ -364,7 +434,6 @@ document.addEventListener('DOMContentLoaded', function() {
     P.forEach(function(p){ S[p.id] = 0; });
     render();
   });
-
 });
 </script>
 </body>
