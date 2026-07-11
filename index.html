@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>FEQ — Calculateur</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>
+html {
+  background: #0d0d14;
+  color: #f0ede8;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  background: #0d0d14;
+  color: #f0ede8;
+  min-height: 100dvh;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 12% 8%, rgba(228,30,49,0.22) 0%, transparent 55%),
+    radial-gradient(ellipse at 88% 25%, rgba(255,48,80,0.14) 0%, transparent 45%),
+    radial-gradient(ellipse at 35% 92%, rgba(228,30,49,0.12) 0%, transparent 50%),
+    radial-gradient(ellipse at 65% 55%, rgba(180,20,40,0.06) 0%, transparent 60%);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.app {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 20px 14px 140px;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 24px;
+  padding-top: 4px;
+}
+
+h1 {
+  font-size: 3.6rem;
+  font-weight: 900;
+  letter-spacing: 0.2em;
+  color: #fff;
+  line-height: 1;
+  margin: 0;
+  text-shadow:
+    0 0 25px rgba(228,30,49,0.8),
+    0 0 50px rgba(228,30,49,0.5),
+    0 0 90px rgba(228,30,49,0.25);
+}
+
+.sub {
+  font-size: 0.72rem;
+  color: #6a6480;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  margin: 8px 0 0;
+}
+
+.products {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.card {
+  background: rgba(22,22,40,0.75);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 12px;
+  padding: 14px 16px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card.active {
+  border-color: rgba(228,30,49,0.35);
+  box-shadow: 0 0 20px rgba(228,30,49,0.1);
+}
+
+.card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 12px;
+  gap: 8px;
+}
+
+.card-name {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.card-unit {
+  font-size: 0.7rem;
+  color: #5c5870;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.stepper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+}
+
+.btn {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: none;
+  font-size: 1.6rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  line-height: 1;
+  flex-shrink: 0;
+  transition: transform 0.08s ease;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.btn:active:not(:disabled) { transform: scale(0.86); }
+.btn:focus-visible { outline: 2px solid #E41E31; outline-offset: 3px; }
+
+.btn-minus {
+  background: rgba(255,255,255,0.06);
+  color: #5c5870;
+  border: 1px solid rgba(255,255,255,0.07);
+}
+.btn-minus:active:not(:disabled) {
+  background: rgba(255,255,255,0.12);
+  color: #9a94a8;
+}
+.btn-minus:disabled { opacity: 0.15; cursor: default; }
+
+.btn-plus {
+  background: #E41E31;
+  color: #fff;
+  box-shadow: 0 3px 14px rgba(228,30,49,0.35);
+}
+.btn-plus:active {
+  background: #ff3050;
+  box-shadow: 0 3px 18px rgba(255,48,80,0.45);
+}
+
+.qty-block { text-align: center; min-width: 80px; }
+
+.qty-num {
+  font-size: 2.8rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  color: #fff;
+  transition: color 0.15s;
+}
+.qty-num.zero { color: #2a2840; }
+
+.qty-detail {
+  font-size: 0.68rem;
+  color: #5c5870;
+  margin-top: 2px;
+  min-height: 1em;
+}
+
+.card-bottom {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255,255,255,0.04);
+}
+
+.subtotal {
+  font-size: 1.05rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: #E41E31;
+  transition: color 0.15s;
+}
+.subtotal.zero { color: #2a2840; }
+
+.actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+  justify-content: center;
+}
+
+.reset {
+  background: none;
+  border: 1px solid rgba(255,255,255,0.07);
+  color: #5c5870;
+  font-size: 0.78rem;
+  cursor: pointer;
+  padding: 8px 22px;
+  border-radius: 20px;
+  touch-action: manipulation;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.reset:active { color: #f0ede8; border-color: rgba(228,30,49,0.3); }
+.reset:focus-visible { outline: 2px solid #E41E31; outline-offset: 2px; }
+
+.share-btn {
+  background: #E41E31;
+  border: none;
+  color: #fff;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 10px 24px;
+  border-radius: 20px;
+  touch-action: manipulation;
+  -webkit-appearance: none;
+  appearance: none;
+  letter-spacing: 0.02em;
+}
+.share-btn:active { background: #ff3050; }
+.share-btn:focus-visible { outline: 2px solid #E41E31; outline-offset: 3px; }
+
+.toast {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-80px);
+  background: #1a1a2e;
+  border: 1px solid rgba(228,30,49,0.4);
+  color: #f0ede8;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-size: 0.82rem;
+  z-index: 200;
+  opacity: 0;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+  pointer-events: none;
+}
+.toast.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+.total-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: rgba(10,10,18,0.92);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-top: 2px solid #E41E31;
+  padding: 14px 18px;
+  padding-bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+}
+
+.total-inner {
+  max-width: 480px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.total-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #6a6480;
+}
+
+.total-amount {
+  font-size: 2.2rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  color: #fff;
+  transition: transform 0.1s ease;
+}
+.total-amount.bump { transform: scale(1.06); }
+
+@media (prefers-reduced-motion: reduce) {
+  .btn, .total-amount, .card, .qty-num, .subtotal { transition: none !important; }
+}
+</style>
+</head>
+<body>
+
+<div class="app">
+  <header>
+    <h1>FEQ</h1>
+    <p class="sub">Calculateur de boissons</p>
+  </header>
+  <div id="products" class="products"></div>
+  <div class="actions" id="actions" hidden>
+    <button id="reset" class="reset">Tout effacer</button>
+    <button id="share" class="share-btn">Envoyer le total</button>
+  </div>
+  <div class="toast" id="toast">Copie dans le presse-papier</div>
+</div>
+
+<div class="total-bar">
+  <div class="total-inner">
+    <span class="total-label">Total</span>
+    <span class="total-amount" id="total">0,00 $</span>
+  </div>
+</div>
+
+<script>
+var P = [
+  { id:'coors',   name:'Coors Light',   unit:'219 $ / cs de 24', step:1, sp:219,   cases:true },
+  { id:'seltzer', name:'Coors Seltzer', unit:'63,75 $ / 6',     step:6, sp:63.75 },
+  { id:'eau',     name:'Eau',           unit:'21,50 $ / 6',     step:6, sp:21.50 },
+  { id:'shooters',name:'Shooters',      unit:'117 $ / bouteille', step:1, sp:117  }
+];
+
+var S = {};
+P.forEach(function(p){ S[p.id] = 0; });
+
+function fmt(n) {
+  var s = n.toFixed(2).split('.');
+  var i = s[0].replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+  return i + ',' + s[1] + ' $';
+}
+
+function sub(p) {
+  var q = S[p.id];
+  return p.step === 1 ? q * p.sp : (q / p.step) * p.sp;
+}
+
+function detail(p) {
+  var q = S[p.id];
+  if (!q) return ' ';
+  if (p.cases) return (q * 24) + ' canettes';
+  return ' ';
+}
+
+function render() {
+  var grand = 0, any = false;
+  P.forEach(function(p) {
+    var q = S[p.id], st = sub(p);
+    grand += st;
+    if (q > 0) any = true;
+
+    document.getElementById('q-' + p.id).textContent = p.cases ? q : q;
+    document.getElementById('q-' + p.id).className = 'qty-num' + (q === 0 ? ' zero' : '');
+    document.getElementById('d-' + p.id).textContent = detail(p);
+    document.getElementById('s-' + p.id).textContent = fmt(st);
+    document.getElementById('s-' + p.id).className = 'subtotal' + (q === 0 ? ' zero' : '');
+    document.getElementById('c-' + p.id).className = 'card' + (q > 0 ? ' active' : '');
+    document.getElementById('m-' + p.id).disabled = q === 0;
+  });
+
+  var te = document.getElementById('total');
+  te.textContent = fmt(grand);
+  te.classList.add('bump');
+  setTimeout(function(){ te.classList.remove('bump'); }, 120);
+  document.getElementById('actions').hidden = !any;
+}
+
+function buildSummary() {
+  var lines = ['FEQ — Commande', ''];
+  var grand = 0;
+  P.forEach(function(p) {
+    var q = S[p.id];
+    if (q === 0) return;
+    var st = sub(p);
+    grand += st;
+    var label = p.name;
+    if (p.cases) {
+      lines.push(q + ' cs ' + label + ' (' + (q * 24) + ' canettes) — ' + fmt(st));
+    } else if (p.step === 6) {
+      lines.push(q + ' ' + label + ' — ' + fmt(st));
+    } else {
+      lines.push(q + ' bte ' + label + ' — ' + fmt(st));
+    }
+  });
+  lines.push('');
+  lines.push('TOTAL : ' + fmt(grand));
+  return lines.join('\n');
+}
+
+function showToast(msg) {
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(function(){ t.classList.remove('show'); }, 2000);
+}
+
+function shareOrder() {
+  var text = buildSummary();
+  if (navigator.share) {
+    navigator.share({ text: text }).catch(function(){});
+  } else if (navigator.clipboard) {
+    navigator.clipboard.writeText(text).then(function(){
+      showToast('Copie dans le presse-papier');
+    });
+  }
+}
+
+function chg(id, dir) {
+  var p;
+  for (var i = 0; i < P.length; i++) { if (P[i].id === id) { p = P[i]; break; } }
+  var nv = S[id] + dir * p.step;
+  if (nv < 0) return;
+  S[id] = nv;
+  render();
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  var c = document.getElementById('products');
+  P.forEach(function(p) {
+    var el = document.createElement('div');
+    el.className = 'card';
+    el.id = 'c-' + p.id;
+    el.innerHTML =
+      '<div class="card-top">' +
+        '<span class="card-name">' + p.name + '</span>' +
+        '<span class="card-unit">' + p.unit + '</span>' +
+      '</div>' +
+      '<div class="stepper">' +
+        '<button class="btn btn-minus" id="m-' + p.id + '" disabled ' +
+          'aria-label="Enlever ' + p.name + '">−</button>' +
+        '<div class="qty-block">' +
+          '<div class="qty-num zero" id="q-' + p.id + '">0</div>' +
+          '<div class="qty-detail" id="d-' + p.id + '"> </div>' +
+        '</div>' +
+        '<button class="btn btn-plus" id="p-' + p.id + '" ' +
+          'aria-label="Ajouter ' + p.name + '">+</button>' +
+      '</div>' +
+      '<div class="card-bottom">' +
+        '<span class="subtotal zero" id="s-' + p.id + '">' + fmt(0) + '</span>' +
+      '</div>';
+    c.appendChild(el);
+
+    document.getElementById('m-' + p.id).addEventListener('click', function(){ chg(p.id, -1); });
+    document.getElementById('p-' + p.id).addEventListener('click', function(){ chg(p.id, 1); });
+  });
+
+  document.getElementById('reset').addEventListener('click', function() {
+    P.forEach(function(p){ S[p.id] = 0; });
+    render();
+  });
+
+  document.getElementById('share').addEventListener('click', shareOrder);
+});
+</script>
+</body>
+</html>
