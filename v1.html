@@ -6,6 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#F4F2FF">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <style>
 :root {
   --bg: #F4F2FF;
@@ -105,7 +106,7 @@ header { text-align: center; padding: 12px 0 6px; flex-shrink: 0; }
   <div class="disclaimer">Ce site n'est pas affilié au Festival d'été de Québec (FEQ) ni à ses organisateurs.<br>Outil personnel créé par Hans B. Martel — <a href="tel:4389203550">438-920-3550</a></div>
 </div>
 <script>
-(function(){var PWD='zone1';var ls=document.getElementById('login-screen');var pw=document.getElementById('login-pw');var btn=document.getElementById('login-btn');var err=document.getElementById('login-error');if(sessionStorage.getItem('feq_auth')==='1'){ls.classList.add('hidden');document.getElementById('app').style.display='';}function tryLogin(){var val=pw.value.trim().replace(/\s/g,'').toLowerCase();if(val===PWD){sessionStorage.setItem('feq_auth','1');ls.classList.add('hidden');document.getElementById('app').style.display='';}else{pw.classList.add('error');err.textContent='Mot de passe incorrect';setTimeout(function(){pw.classList.remove('error');},500);}}btn.addEventListener('click',tryLogin);pw.addEventListener('keydown',function(e){if(e.key==='Enter')tryLogin();});})();
+(function(){var PWD='zone1';var ls=document.getElementById('login-screen');var pw=document.getElementById('login-pw');var btn=document.getElementById('login-btn');var err=document.getElementById('login-error');if(sessionStorage.getItem('feq_auth')==='1'){ls.classList.add('hidden');document.getElementById('app').style.display='';}function tryLogin(){var val=pw.value.trim().replace(/\s/g,'').toLowerCase();if(val==='coucou'){window.location.href='index.html';return;}if(val===PWD){sessionStorage.setItem('feq_auth','1');ls.classList.add('hidden');document.getElementById('app').style.display='';}else{pw.classList.add('error');err.textContent='Mot de passe incorrect';setTimeout(function(){pw.classList.remove('error');},500);}}btn.addEventListener('click',tryLogin);pw.addEventListener('keydown',function(e){if(e.key==='Enter')tryLogin();});})();
 var P=[{id:'coors',name:'Coors Light',unit:'219 $ / cs de 24',step:1,sp:219,cases:true},{id:'seltzer',name:'Coors Seltzer',unit:'63,75 $ / 6',step:6,sp:63.75},{id:'eau',name:'Eau',unit:'43 $ / 12',step:12,sp:43}];
 var S={};P.forEach(function(p){S[p.id]=0;});
 function fmt(n){var s=n.toFixed(2).split('.');return s[0].replace(/\B(?=(\d{3})+(?!\d))/g,' ')+','+s[1]+' $';}

@@ -431,9 +431,9 @@ body {
 
 <script>
 var P = [
-  { id:'coors',   name:'Coors Light',   unit:'219 $ / cs de 24', step:1, sp:219, cases:true },
-  { id:'seltzer', name:'Coors Seltzer', unit:'63,75 $ / 6',     step:6, sp:63.75 },
-  { id:'eau',     name:'Eau',           unit:'43 $ / 12',       step:12, sp:43 }
+  { id:'coors',   name:'Coors Light',   unit:'219 $ / cs de 24', step:1, sp:219, cases:true, btu:24, ppu:219/24 },
+  { id:'seltzer', name:'Coors Seltzer', unit:'63,75 $ / 6',     step:6, sp:63.75, btu:1, ppu:63.75/6 },
+  { id:'eau',     name:'Eau',           unit:'43 $ / 12',       step:12, sp:43, btu:1, ppu:43/12 }
 ];
 
 var APP = {
@@ -474,7 +474,7 @@ function totalBought() {
 
 function totalReturns() {
   var t = 0;
-  P.forEach(function(p) { t += subFor(APP.ret[p.id], p); });
+  P.forEach(function(p) { t += APP.ret[p.id] * p.ppu; });
   return t;
 }
 
@@ -673,8 +673,9 @@ function buildReturnCards() {
   P.forEach(function(p) {
     var el = document.createElement('div');
     el.className = 'card return-card'; el.id = 'rc-' + p.id;
+    var ppuLabel = p.ppu.toFixed(2).replace('.', ',') + ' $ / unite';
     el.innerHTML =
-      '<div class="card-top"><span class="card-name">' + p.name + '</span><span class="card-unit">' + p.unit + '</span></div>' +
+      '<div class="card-top"><span class="card-name">' + p.name + '</span><span class="card-unit">' + ppuLabel + '</span></div>' +
       '<div class="stepper">' +
         '<button class="btn btn-minus" id="rm-' + p.id + '" disabled>&minus;</button>' +
         '<div class="qty-block"><div class="qty-num zero" id="rq-' + p.id + '">0</div>' +
@@ -690,18 +691,19 @@ function buildReturnCards() {
 
 function chgRet(id, dir) {
   var p; for (var i = 0; i < P.length; i++) { if (P[i].id === id) { p = P[i]; break; } }
-  var nv = APP.ret[id] + dir * p.step;
-  if (nv < 0 || nv > APP.bought[id]) return;
+  var nv = APP.ret[id] + dir;
+  var max = APP.bought[id] * p.btu;
+  if (nv < 0 || nv > max) return;
   APP.ret[id] = nv;
   renderReturn();
 }
 
 function renderReturn() {
   P.forEach(function(p) {
-    var q = APP.ret[p.id], max = APP.bought[p.id], st = subFor(q, p);
+    var q = APP.ret[p.id], max = APP.bought[p.id] * p.btu, st = q * p.ppu;
     document.getElementById('rq-' + p.id).textContent = q;
     document.getElementById('rq-' + p.id).className = 'qty-num' + (q === 0 ? ' zero' : '');
-    document.getElementById('rl-' + p.id).textContent = 'max : ' + max;
+    document.getElementById('rl-' + p.id).textContent = 'max : ' + max + ' unités';
     document.getElementById('rs-' + p.id).textContent = fmt(st);
     document.getElementById('rs-' + p.id).className = 'subtotal' + (q === 0 ? ' zero' : '');
     document.getElementById('rc-' + p.id).className = 'card return-card' + (q > 0 ? ' active' : '');
