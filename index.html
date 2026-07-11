@@ -291,6 +291,22 @@ header {
 }
 .reset:active { background: #E0204F; }
 
+.disclaimer {
+  flex-shrink: 0;
+  text-align: center;
+  padding: 6px 10px;
+  padding-bottom: calc(6px + env(safe-area-inset-bottom, 0px));
+  font-size: 0.48rem;
+  line-height: 1.5;
+  color: #A09CB4;
+  letter-spacing: 0.01em;
+}
+
+.disclaimer a {
+  color: #8A86A0;
+  text-decoration: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .btn, .header-total, .card, .qty-num, .subtotal { transition: none !important; }
 }
@@ -314,6 +330,10 @@ header {
   <div id="products" class="products"></div>
   <div class="actions" id="actions" hidden>
     <button id="reset" class="reset">Tout effacer</button>
+  </div>
+  <div class="disclaimer">
+    Ce site n'est pas affilié au Festival d'été de Québec (FEQ) ni à ses organisateurs.<br>
+    Outil personnel créé par Hans B. Martel — <a href="tel:4389203550">438-920-3550</a>
   </div>
 </div>
 
