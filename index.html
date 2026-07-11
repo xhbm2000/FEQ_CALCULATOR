@@ -82,6 +82,17 @@ h1 {
   margin: 5px 0 0;
 }
 
+.header-total {
+  font-size: 2rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  color: #E41E31;
+  margin: 8px 0 0;
+  text-shadow: 0 0 20px rgba(228,30,49,0.4);
+  transition: transform 0.1s ease;
+}
+.header-total.bump { transform: scale(1.08); }
+
 .products {
   display: flex;
   flex-direction: column;
@@ -222,53 +233,19 @@ h1 {
 }
 
 .reset {
-  background: none;
-  border: 1px solid rgba(255,255,255,0.08);
-  color: rgba(240,237,232,0.4);
-  font-size: 0.75rem;
+  background: rgba(228,30,49,0.15);
+  border: 1px solid rgba(228,30,49,0.3);
+  color: #E41E31;
+  font-size: 0.95rem;
+  font-weight: 600;
   cursor: pointer;
-  padding: 7px 18px;
-  border-radius: 20px;
+  padding: 12px 32px;
+  border-radius: 25px;
   touch-action: manipulation;
   -webkit-appearance: none;
   appearance: none;
 }
-.reset:active { color: #f0ede8; border-color: rgba(228,30,49,0.3); }
-
-.total-bar {
-  flex-shrink: 0;
-  background: rgba(20,8,8,0.92);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border-top: 2px solid #E41E31;
-  padding: 10px 4px;
-  padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px));
-  box-shadow: 0 -6px 24px rgba(228,30,49,0.1);
-}
-
-.total-inner {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.total-label {
-  font-size: 0.8rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: rgba(240,237,232,0.45);
-}
-
-.total-amount {
-  font-size: 1.9rem;
-  font-weight: 800;
-  font-variant-numeric: tabular-nums;
-  color: #fff;
-  transition: transform 0.1s ease;
-  text-shadow: 0 0 16px rgba(228,30,49,0.3);
-}
-.total-amount.bump { transform: scale(1.06); }
+.reset:active { background: rgba(228,30,49,0.3); color: #fff; }
 
 @media (prefers-reduced-motion: reduce) {
   .btn, .total-amount, .card, .qty-num, .subtotal { transition: none !important; }
@@ -284,16 +261,11 @@ h1 {
   <header>
     <h1>FEQ</h1>
     <p class="sub">Calculateur de boissons</p>
+    <div class="header-total" id="header-total">0,00 $</div>
   </header>
   <div id="products" class="products"></div>
   <div class="actions" id="actions" hidden>
     <button id="reset" class="reset">Tout effacer</button>
-  </div>
-  <div class="total-bar">
-    <div class="total-inner">
-      <span class="total-label">Total</span>
-      <span class="total-amount" id="total">0,00 $</span>
-    </div>
   </div>
 </div>
 
@@ -342,7 +314,7 @@ function render() {
     document.getElementById('m-' + p.id).disabled = q === 0;
   });
 
-  var te = document.getElementById('total');
+  var te = document.getElementById('header-total');
   te.textContent = fmt(grand);
   te.classList.add('bump');
   setTimeout(function(){ te.classList.remove('bump'); }, 120);
