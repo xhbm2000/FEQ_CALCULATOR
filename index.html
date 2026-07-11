@@ -235,46 +235,6 @@ h1 {
 }
 .reset:active { color: #f0ede8; border-color: rgba(228,30,49,0.3); }
 
-.share-btn {
-  background: #E41E31;
-  border: none;
-  color: #fff;
-  font-size: 0.78rem;
-  font-weight: 600;
-  cursor: pointer;
-  padding: 8px 20px;
-  border-radius: 20px;
-  touch-action: manipulation;
-  -webkit-appearance: none;
-  appearance: none;
-  letter-spacing: 0.02em;
-  box-shadow: 0 3px 10px rgba(228,30,49,0.35);
-}
-.share-btn:active { background: #ff3050; }
-
-.toast {
-  position: fixed;
-  top: 16px;
-  left: 50%;
-  transform: translateX(-50%) translateY(-70px);
-  background: rgba(20,8,8,0.92);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(228,30,49,0.4);
-  color: #f0ede8;
-  padding: 8px 18px;
-  border-radius: 10px;
-  font-size: 0.78rem;
-  z-index: 200;
-  opacity: 0;
-  transition: transform 0.25s ease, opacity 0.25s ease;
-  pointer-events: none;
-}
-.toast.show {
-  transform: translateX(-50%) translateY(0);
-  opacity: 1;
-}
-
 .total-bar {
   flex-shrink: 0;
   background: rgba(20,8,8,0.92);
@@ -328,7 +288,6 @@ h1 {
   <div id="products" class="products"></div>
   <div class="actions" id="actions" hidden>
     <button id="reset" class="reset">Tout effacer</button>
-    <button id="share" class="share-btn">Envoyer le total</button>
   </div>
   <div class="total-bar">
     <div class="total-inner">
@@ -338,7 +297,6 @@ h1 {
   </div>
 </div>
 
-<div class="toast" id="toast">Copie dans le presse-papier</div>
 
 <script>
 var P = [
@@ -391,44 +349,6 @@ function render() {
   document.getElementById('actions').hidden = !any;
 }
 
-function buildSummary() {
-  var lines = ['FEQ — Commande', ''];
-  var grand = 0;
-  P.forEach(function(p) {
-    var q = S[p.id];
-    if (q === 0) return;
-    var st = sub(p);
-    grand += st;
-    var label = p.name;
-    if (p.cases) {
-      lines.push(q + ' cs ' + label + ' (' + (q * 24) + ' canettes) — ' + fmt(st));
-    } else {
-      lines.push(q + ' ' + label + ' — ' + fmt(st));
-    }
-  });
-  lines.push('');
-  lines.push('TOTAL : ' + fmt(grand));
-  return lines.join('\n');
-}
-
-function showToast(msg) {
-  var t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(function(){ t.classList.remove('show'); }, 2000);
-}
-
-function shareOrder() {
-  var text = buildSummary();
-  if (navigator.share) {
-    navigator.share({ text: text }).catch(function(){});
-  } else if (navigator.clipboard) {
-    navigator.clipboard.writeText(text).then(function(){
-      showToast('Copie dans le presse-papier');
-    });
-  }
-}
-
 function chg(id, dir) {
   var p;
   for (var i = 0; i < P.length; i++) { if (P[i].id === id) { p = P[i]; break; } }
@@ -473,7 +393,6 @@ document.addEventListener('DOMContentLoaded', function() {
     render();
   });
 
-  document.getElementById('share').addEventListener('click', shareOrder);
 });
 </script>
 </body>
