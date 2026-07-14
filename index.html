@@ -124,7 +124,7 @@ header { text-align: center; padding: 12px 0 6px; flex-shrink: 0; }
   btn.addEventListener('click',tryLogin);
   pw.addEventListener('keydown',function(e){if(e.key==='Enter')tryLogin();});
 })();
-var P=[{id:'coors',name:'Coors Light',unit:'219 $ / cs de 24',step:1,sp:219,cases:true},{id:'seltzer',name:'Coors Seltzer',unit:'63,75 $ / 6',step:6,sp:63.75},{id:'rose',name:'Vin Rosé',unit:'78,75 $ / 6',step:6,sp:78.75},{id:'eau',name:'Eau',unit:'43 $ / 12',step:12,sp:43}];
+var P=[{id:'coors',name:'Coors Light',unit:'219 $ / cs de 24',step:1,sp:219,cases:true},{id:'seltzer',name:'Coors Seltzer',unit:'63,75 $ / 6',step:6,sp:63.75},{id:'rose',name:'Vin Rosé',unit:'78,75 $ / 6',step:6,sp:78.75},{id:'gatorade',name:'Gatorade',unit:'72,50 $ / 12',step:12,sp:72.50},{id:'eau',name:'Eau',unit:'43 $ / 12',step:12,sp:43}];
 var S={};P.forEach(function(p){S[p.id]=0;});
 function fmt(n){var s=n.toFixed(2).split('.');return s[0].replace(/\B(?=(\d{3})+(?!\d))/g,' ')+','+s[1]+' $';}
 function sub(p){var q=S[p.id];return p.step===1?q*p.sp:(q/p.step)*p.sp;}
